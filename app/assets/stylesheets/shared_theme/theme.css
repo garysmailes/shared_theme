@@ -684,3 +684,22 @@ pre {
 @media (min-width: 80em) {
   /* Shared wide-screen component overrides. */
 }
+
+/* Social links */
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-link svg {
+  display: block;
+  flex-shrink: 0;
+}
