@@ -1,0 +1,686 @@
+/*
+ * SHARED THEME
+ *
+ * Generic styles shared across our websites, loaded after reset.css.
+ * Includes theme settings, base typography and reusable utilities.
+ * Single page is the default content layout; Post adds article-specific structure.
+ *
+ * The :root section defines CSS custom properties (variables).
+ * Rules reference these with var(), for example:
+ * color: var(--color-primary).
+ *
+ * Changing a variable updates every rule that uses it.
+ * Individual websites can override these variables in site.css,
+ * which loads after this stylesheet.
+ *
+ * This file must remain independent of any particular website
+ * or demo page so it can be distributed through the shared gem.
+ */
+
+/* Theme settings */
+:root {
+  --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-heading: var(--font-body);
+  --font-brand: var(--font-body);
+  --font-code: ui-monospace, monospace;
+
+  --font-size-body: 1rem;
+  --font-size-brand: 1.25rem;
+  --font-size-lead: 1.25rem;
+  --font-size-small: 0.875rem;
+  --font-size-h1: clamp(2rem, 1.5rem + 2vw, 3rem);
+  --font-size-h2: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
+  --font-size-h3: 1.5rem;
+  --font-size-h4: 1.25rem;
+  --font-size-h5: 1.125rem;
+  --font-size-h6: 1rem;
+
+  --line-height-body: 1.6;
+  --line-height-heading: 1.2;
+  --line-height-heading-small: 1.3;
+  --font-weight-body: 400;
+  --font-weight-heading: 700;
+  --font-weight-bold: 700;
+
+  --color-background: #ffffff;
+  --color-text: #202124;
+  --color-muted: #595f69;
+  --color-primary: #2457d6;
+  --color-border: #dfe3e8;
+  --color-surface: #f4f5f7;
+  --color-footer-background: #ffffff;
+  --color-footer-text: #000000;
+
+  --single-page-width: 70ch;
+  --post-content-width: 45rem;
+  --post-width: 72.75rem;
+  --posts-width: 72.75rem;
+  --font-posts-links: Georgia, "Times New Roman", serif;
+  --post-sidebar-width: 18rem;
+  --page-width: 72rem; /* Footer content width. */
+  --page-padding: clamp(1rem, 4vw, 3rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+}
+
+/* Document foundation */
+body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-body);
+  color: var(--color-text);
+  background: var(--color-background);
+}
+
+/* Single page: the default content layout at every screen size. */
+.single-page {
+  width: calc(100% - 2 * var(--page-padding));
+  max-width: min(var(--single-page-width), 50rem);
+  margin-inline: auto;
+  padding-block: var(--space-12);
+  overflow-wrap: anywhere;
+}
+
+.single-page__header {
+  margin-block-end: var(--space-8);
+}
+
+/* Post: article and supporting author information. */
+.post {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(2rem, 4vw, 4rem);
+  width: calc(100% - 2 * var(--page-padding));
+  max-width: var(--post-width);
+  margin-inline: auto;
+  padding-block: clamp(1rem, 2vw, 2rem) clamp(3rem, 8vw, 7.5rem);
+  overflow-wrap: anywhere;
+}
+
+.post > * {
+  min-width: 0;
+}
+
+.post__article,
+.post__author {
+  max-width: var(--post-content-width);
+}
+
+.post__header {
+  padding-block-end: var(--space-6);
+}
+
+.post__toc {
+  margin-block: var(--space-6) var(--space-12);
+}
+
+.post__toc li + li {
+  margin-block-start: 0;
+}
+
+.post__meta,
+.post__breadcrumbs {
+  font-size: var(--font-size-small);
+}
+
+.post__meta,
+.post__breadcrumbs {
+  color: var(--color-muted);
+}
+
+.post__breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post__breadcrumbs li {
+  margin: 0;
+}
+
+.post__breadcrumbs .post__separator {
+  margin-inline-end: var(--space-2);
+}
+
+.post__toc h2 {
+  font-size: var(--font-size-h3);
+}
+
+.post__author h2 {
+  margin-block-start: 0;
+  font-size: var(--font-size-small);
+  color: var(--color-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.post__body > section + section {
+  margin-block-start: var(--space-8);
+}
+
+.post__author {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+/* Opt in by adding post--drop-cap to the main Post wrapper. */
+.post--drop-cap .post__body > p:first-child::first-letter {
+  float: left;
+  font-size: 3.5em;
+  font-weight: var(--font-weight-bold);
+  line-height: 0.9;
+  margin-block-start: 0.08em;
+  margin-inline-end: 0.12em;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  line-height: var(--line-height-heading);
+  font-weight: var(--font-weight-heading);
+  margin-bottom: var(--space-4);
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+}
+
+h4 {
+  font-size: var(--font-size-h4);
+}
+
+h5 {
+  font-size: var(--font-size-h5);
+}
+
+h6 {
+  font-size: var(--font-size-h6);
+}
+
+h3,
+h4,
+h5,
+h6 {
+  line-height: var(--line-height-heading-small);
+}
+
+/* Separate topics after prose, keeping consecutive headings together. */
+.prose > :is(p, ul, ol, dl, blockquote, pre):not(.eyebrow) + :is(h1, h2, h3, h4, h5, h6) {
+  margin-block-start: var(--space-8);
+}
+
+/* Text */
+p,
+ul,
+ol,
+dl,
+blockquote,
+pre {
+  margin-bottom: var(--space-4);
+}
+
+.lead {
+  font-size: var(--font-size-lead);
+}
+
+small {
+  font-size: var(--font-size-small);
+}
+
+strong,
+b {
+  font-weight: var(--font-weight-bold);
+}
+
+.text-muted {
+  color: var(--color-muted);
+}
+
+.eyebrow {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-muted);
+}
+
+/* Apply to numeric table headers and cells. */
+.numeric-cell {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Links and keyboard focus */
+a {
+  color: var(--color-primary);
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  text-decoration-thickness: 0.15em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+/* Lists */
+ul,
+ol {
+  padding-inline-start: var(--space-6);
+}
+
+li + li {
+  margin-top: var(--space-2);
+}
+
+li > :is(ul, ol) {
+  margin-top: var(--space-2);
+  margin-bottom: 0;
+}
+
+dt {
+  font-weight: var(--font-weight-bold);
+}
+
+dd {
+  margin-bottom: var(--space-4);
+}
+
+/* Quotes and separators */
+blockquote {
+  padding-inline-start: var(--space-6);
+  border-inline-start: 4px solid var(--color-border);
+}
+
+blockquote footer {
+  color: var(--color-muted);
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  margin-block: var(--space-8);
+}
+
+/* Code */
+code,
+pre {
+  font-family: var(--font-code);
+}
+
+pre {
+  padding: var(--space-4);
+  background: var(--color-surface);
+  overflow-x: auto;
+}
+
+/* Full-width site header and primary navigation */
+.site-header {
+  width: 100%;
+}
+
+.site-header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-8);
+  padding: var(--space-4) var(--page-padding);
+}
+
+.site-brand {
+  font-family: var(--font-brand);
+  font-size: var(--font-size-brand);
+  font-weight: normal;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.site-nav-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: var(--space-2);
+  color: var(--color-text);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.site-nav-toggle[hidden] {
+  display: none;
+}
+
+.site-nav {
+  flex-basis: 100%;
+}
+
+/* Without JavaScript, the toggle stays hidden and all links remain available. */
+.site-nav-toggle:not([hidden])[aria-expanded="false"] + .site-nav {
+  display: none;
+}
+
+.site-nav__list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: var(--space-3) var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav__list > li {
+  margin: 0;
+}
+
+.site-nav__list a {
+  display: block;
+  padding-block: var(--space-2);
+}
+
+.site-nav__dropdown {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.site-nav__dropdown-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  min-width: 24px;
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: var(--space-2) 0;
+  color: var(--color-text);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.site-nav__dropdown-toggle[aria-expanded="true"] svg {
+  transform: rotate(90deg);
+}
+
+.site-nav__dropdown > .site-nav__submenu {
+  flex-basis: 100%;
+  list-style: none;
+  margin: 0;
+  padding-inline-start: var(--space-6);
+}
+
+.site-nav__submenu > li {
+  margin: 0;
+}
+
+/* Grouped site footer */
+.site-footer {
+  width: 100%;
+  margin-block-start: var(--space-12);
+  color: var(--color-footer-text);
+  background: var(--color-footer-background);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.site-footer__inner {
+  max-width: var(--page-width);
+  margin-inline: auto;
+  padding: var(--space-12) var(--page-padding);
+}
+
+.site-footer__nav {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-8);
+}
+
+.site-footer__heading {
+  margin-block-end: var(--space-3);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.site-footer__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-footer__links > li {
+  margin: 0;
+}
+
+.site-footer__links a {
+  display: inline-block;
+  padding-block: var(--space-2);
+  color: inherit;
+  font-size: var(--font-size-small);
+  font-weight: normal;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.site-footer__links a:hover,
+.site-footer__links a:focus-visible {
+  text-decoration: underline;
+}
+
+.site-footer a:focus-visible {
+  outline-color: currentColor;
+}
+
+/* Posts: a topic directory matching the reference Articles index. */
+.posts {
+  width: calc(100% - 2 * var(--page-padding));
+  max-width: var(--posts-width);
+  margin-inline: auto;
+  padding-block: clamp(1rem, 2vw, 2rem) clamp(3rem, 8vw, 7.5rem);
+  overflow-wrap: anywhere;
+}
+
+.posts__header {
+  display: grid;
+  justify-items: center;
+  gap: 2rem;
+  max-width: 60rem;
+  margin-inline: auto;
+  padding-block: clamp(2.5rem, 7vw, 5rem) clamp(4rem, 9vw, 7rem);
+  text-align: center;
+}
+
+.posts__header h1,
+.posts__header p {
+  margin: 0;
+}
+
+.posts__header h1 {
+  font-size: clamp(2rem, 4vw, 2.5rem);
+}
+
+.posts__header p {
+  max-width: 42rem;
+  font-family: var(--font-posts-links);
+  font-size: clamp(1.125rem, 2vw, 1.25rem);
+}
+
+.posts__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(3rem, 7vw, 6rem);
+}
+
+.posts__category {
+  min-width: 0;
+}
+
+.posts__category h2 {
+  margin: 0;
+  padding-block-end: 0.75rem;
+  font-size: 1.25rem;
+}
+
+.posts__category a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.posts__category a:hover,
+.posts__category a:focus-visible {
+  text-decoration: underline;
+}
+
+.posts__category ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.posts__category li {
+  margin: 0;
+}
+
+.posts__category li a {
+  display: flex;
+  align-items: center;
+  min-height: 3.625rem;
+  font-family: var(--font-posts-links);
+  font-size: 1.125rem;
+  line-height: 1.35;
+}
+
+.posts__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 3.5rem;
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Shared responsive breakpoints
+ * Base rules above apply at every width, starting with small screens.
+ * Add component overrides below as responsive layouts are introduced.
+ * These minimum-width queries accumulate: wide screens match all three.
+ * Pixel equivalents assume a browser default font size of 16px.
+ */
+
+/* Medium: 40em (usually 640px) */
+@media (min-width: 40em) {
+  .site-footer__nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Posts matches the reference directory's 48rem column breakpoint. */
+@media (min-width: 48rem) {
+  .posts__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(3rem, 8vw, 8.5rem);
+  }
+}
+
+/* Large: 60em (usually 960px) */
+@media (min-width: 60em) {
+  .site-nav__dropdown-toggle:not([hidden]) {
+    display: inline-flex;
+  }
+
+  /* Without a connected controller, nested links stay visible in normal flow. */
+  .site-nav__dropdown-toggle:not([hidden]) + .site-nav__submenu {
+    position: absolute;
+    z-index: 10;
+    inset-block-start: 100%;
+    inset-inline-end: 0;
+    min-width: 12rem;
+    max-width: calc(100vw - 2 * var(--page-padding));
+    padding: var(--space-2);
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 0.25rem;
+    box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 0.1);
+  }
+
+  .site-nav__dropdown-toggle:not([hidden])[aria-expanded="false"] + .site-nav__submenu {
+    display: none;
+  }
+
+  .site-nav__submenu a {
+    padding-inline: var(--space-3);
+    overflow-wrap: anywhere;
+  }
+
+  .site-nav__submenu a:hover,
+  .site-nav__submenu a:focus-visible {
+    background: var(--color-surface);
+  }
+
+  .site-footer__nav {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .site-nav-toggle {
+    display: none;
+  }
+
+  .site-nav {
+    flex-basis: auto;
+  }
+
+  .site-nav-toggle:not([hidden])[aria-expanded="false"] + .site-nav {
+    display: block;
+  }
+
+  .site-nav__list {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* Post matches the reference article's 64rem sidebar breakpoint. */
+@media (min-width: 64rem) {
+  .post {
+    grid-template-columns: minmax(0, var(--post-content-width)) minmax(16rem, var(--post-sidebar-width));
+    justify-content: space-between;
+    column-gap: clamp(2rem, 6vw, 6rem);
+  }
+}
+
+/* Wide: 80em (usually 1280px) */
+@media (min-width: 80em) {
+  /* Shared wide-screen component overrides. */
+}
