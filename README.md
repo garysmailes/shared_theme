@@ -52,7 +52,7 @@ gem "shared_theme",
 Choose one source, not both. The public repository needs no GitHub credentials
 for installation. Git must be available wherever Bundler installs dependencies,
 including the deployment build. The gem is distributed through Git, not RubyGems.
-The current version is `0.1.5`.
+The current version is `0.1.6`.
 
 Bundler records the exact Git revision in the website's `Gemfile.lock`.
 `bundle install` preserves that revision; `bundle update` can fetch newer commits
@@ -302,7 +302,8 @@ standard pages through its application layout and documents it at
 
 ## Post layout
 
-Use `main.post` containing `article.post__article` and `aside.post__author`.
+Use `main.post` containing `article.post__article` and `aside.post__sidebar`.
+Existing `aside.post__author` markup is still supported.
 The layout stacks below 64rem and shows an author sidebar from 64rem.
 `--post-content-width` defaults to 45rem;
 `--post-width` defaults to 72.75rem and `--post-sidebar-width` to 18rem.
@@ -761,3 +762,23 @@ Adds the reusable authentication layout and `--auth-width` setting, with a
 Removes the shared rule that made link underlines thicker on hover. Individual
 websites may still apply their own hover styles. No existing settings are renamed
 or removed; existing site.css files remain untouched.
+
+
+### Sidebar sections and version 0.1.6
+
+Use `.post__sidebar` for a sidebar and wrap each block in a headed
+`.post__sidebar-section`. Give the aside an accessible label and each section
+an h2 heading. Headings use the site’s heading font, bold 1.25rem text, normal
+case and letter spacing, and the standard text colour.
+
+Content has `--space-3` (12px by default) gaps within each section, with
+`--space-4` (16px) before a `.form`. Consecutive sections have `--space-12` (48px)
+space, a 1px divider using `--color-border`, then `--space-6` (24px) padding.
+Use `.form` and `.form-field` for signup forms to retain spacing between fields.
+The sidebar stays top-aligned on desktop and follows the article below 64rem.
+
+Existing `.post__author` sidebars continue to work and get the new heading style.
+For multiple blocks, add `.post__sidebar-section` wrappers to gain dividers and
+section spacing; changing the container to `.post__sidebar` is recommended but
+not required. No settings were removed or renamed. The demo Post guide shows an
+author introduction, a non-submitting newsletter preview and related links.

@@ -153,6 +153,7 @@ body {
 }
 
 .post__article,
+.post__sidebar,
 .post__author {
   max-width: var(--post-content-width);
 }
@@ -200,21 +201,46 @@ body {
   font-size: var(--font-size-h3);
 }
 
-.post__author h2 {
-  margin-block-start: 0;
-  font-size: var(--font-size-small);
-  color: var(--color-muted);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+/* post__author remains supported for existing single-block sidebars. */
+.post__sidebar,
+.post__author {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+:is(.post__sidebar, .post__author) h2 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  color: var(--color-text);
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.post__sidebar-section > *,
+.post__author > :is(p, ul, ol) {
+  margin-block: 0;
+}
+
+.post__sidebar-section > * + *,
+.post__author > * + * {
+  margin-block-start: var(--space-3);
+}
+
+.post__sidebar-section > .form {
+  margin-block-start: var(--space-4);
+}
+
+:where(.post__sidebar, .post__author) > .post__sidebar-section + .post__sidebar-section {
+  margin-block-start: var(--space-12);
+  padding-block-start: var(--space-6);
+  border-block-start: 1px solid var(--color-border);
 }
 
 .post__body > section + section {
   margin-block-start: var(--space-8);
-}
-
-.post__author {
-  font-size: 0.9375rem;
-  line-height: 1.6;
 }
 
 /* Opt in by adding post--drop-cap to the main Post wrapper. */
