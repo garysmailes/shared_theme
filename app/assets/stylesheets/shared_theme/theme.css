@@ -272,6 +272,50 @@ b {
   font-variant-numeric: tabular-nums;
 }
 
+/* Responsive images: display and max-width are supplied by reset.css. */
+img {
+  height: auto;
+}
+
+/* Figures may contain images, quotes or other self-contained content. */
+figure {
+  margin-block: var(--space-8);
+  margin-inline: 0;
+}
+
+figcaption {
+  margin-block-start: var(--space-2);
+  color: var(--color-muted);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-body);
+  overflow-wrap: anywhere;
+}
+
+/* Optional gallery: stacked on mobile, preserving each image's proportions. */
+.image-gallery {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
+  margin-block: var(--space-8);
+}
+
+.image-gallery > figure {
+  min-width: 0;
+  margin: 0;
+}
+
+/* Support direct images, linked images and responsive picture elements. */
+.image-gallery > figure > :is(a, picture),
+.image-gallery > figure > a > picture {
+  display: block;
+}
+
+.image-gallery > figure > img,
+.image-gallery > figure > :is(a, picture) > img,
+.image-gallery > figure > a > picture > img {
+  width: 100%;
+}
+
 /* Links and keyboard focus */
 a {
   color: var(--color-primary);
@@ -601,6 +645,10 @@ pre {
 
 /* Medium: 40em (usually 640px) */
 @media (min-width: 40em) {
+  .image-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .site-footer__nav {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

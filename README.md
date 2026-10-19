@@ -228,6 +228,38 @@ The Footer guide at `/components/footer` documents grouped navigation, the
 `--color-footer-background` and `--color-footer-text` settings, and the one-, two-
 and four-column layouts. The footer requires no JavaScript.
 
+## Images and captions
+
+Images shrink to fit their container and preserve their proportions. Standalone
+images retain their natural width; gallery images fill their column and may be
+enlarged. Figures have vertical spacing, and optional captions use small, muted
+text. These figure styles also apply to figures containing quotes or other content.
+
+Use `.image-gallery` with direct `figure` children for one column below 40em and
+two equal columns from 40em. Images can be direct children of each figure,
+wrapped in a link or `picture`, or inside a linked `picture`. Images retain their
+own aspect ratios; the gallery does not crop them to matching heights.
+
+```html
+<div class="image-gallery">
+  <figure>
+    <img src="/images/coast.jpg" alt="Rocky coastline beside calm water"
+         width="1200" height="800" loading="lazy">
+    <figcaption>The coast at low tide.</figcaption>
+  </figure>
+  <figure>
+    <img src="/images/path.jpg" alt="A footpath winding through the dunes"
+         width="1200" height="800" loading="lazy">
+  </figure>
+</div>
+```
+
+Set `width` and `height` to the source image's actual dimensions to reserve space
+while it loads. Supply appropriate alt text (`alt=""` for decorative images).
+Use lazy loading for images below the initial viewport, not the main image visible
+on page load. Add `srcset` and `sizes` in the consuming website when multiple image
+resolutions are available; CSS controls layout, not which file is downloaded.
+
 ## Single page layout
 
 Use `<main class="single-page" id="main-content" tabindex="-1">` for the page
