@@ -52,7 +52,7 @@ gem "shared_theme",
 Choose one source, not both. The public repository needs no GitHub credentials
 for installation. Git must be available wherever Bundler installs dependencies,
 including the deployment build. The gem is distributed through Git, not RubyGems.
-Its initial version is `0.1.0`.
+The current version is `0.1.4`.
 
 Bundler records the exact Git revision in the website's `Gemfile.lock`.
 `bundle install` preserves that revision; `bundle update` can fetch newer commits
@@ -629,3 +629,93 @@ utilities. Markdown renderers must explicitly map right-aligned cells to
 Test the site's actual content; unusually wide tables may require a separately
 agreed shared-theme enhancement. The same applies to any other missing reusable
 component: document the limitation rather than claiming it is implemented.
+
+## Forms and buttons
+
+The demo guide at `/components/forms` previews a contact form, native controls,
+validation states and button variants. Add `.form` to a form, `.form-field` to
+label/control/help wrappers, `.form-help` to supporting text and `.form-error` to
+error messages. Connect descriptions with `aria-describedby` and mark actual
+errors with `aria-invalid="true"`. Required fields are not styled as errors on
+initial load. Use visible labels and mark required fields in their text.
+
+`.form-row` stacks on narrow screens and uses two equal columns from 40em;
+`.form-field--short` caps a field at 12rem. `.form-choice` provides a clickable
+checkbox/radio label. Native select arrows, date pickers and choice controls are
+preserved. `.button-group` wraps actions; `.button` supports `--secondary`,
+`--outline`, `--danger`, `--small` and `--large` modifiers (for example
+`.button--secondary`). Use native `disabled` on unavailable buttons.
+
+Form controls inherit theme colours and fonts. Additional settings are
+`--color-control-border: #858b95`, `--color-danger: #b42318`,
+`--color-on-primary: #ffffff`, `--color-on-danger: #ffffff`,
+`--form-radius: 0.375rem`, `--form-control-padding: 0.75rem` and
+`--form-field-gap: var(--space-6)`. Ensure custom colour pairs retain readable
+contrast. Controls are scoped to `.form` and `.form-field`, and buttons require
+`.button`, leaving navigation buttons independent.
+
+The gem supplies no submission or validation logic. Each website owns its Rails
+form endpoint, CSRF protection and error rendering. The contact demo uses its own
+`form_preview_controller.js` only to announce a preview without sending data.
+
+
+### Forms FAQ
+
+**How do I get these styles on an existing website?**
+
+Run `bundle update shared_theme`, add `.form` to the form or `.form-field` to
+individual field wrappers, and `.button` to the action buttons. Commit the updated
+lockfile and markup, check the form, and deploy through the website’s normal
+process. Existing matching classes will pick up the styles immediately after the
+dependency updates. Navigation buttons without `.button` are unaffected.
+
+**Do I need to rerun the installer or replace site.css?**
+
+No. Version 0.1.4 provides the new defaults in the shared stylesheet. Existing
+`site.css` files stay untouched, including when the installer is rerun with
+`--force`. Add only the overrides you want. The updated installer template lists
+all new settings for future installations.
+
+**Can I change the corners, spacing and colours?**
+
+Yes. Override the settings listed above in `site.css`. Inputs use the theme’s
+background, text and primary colours, with a separate `--color-control-border`
+for their outlines. Buttons use `--color-on-primary` or `--color-on-danger` for
+text on filled backgrounds. Keep custom colour combinations readable.
+
+**Does the gem submit forms or validate the data?**
+
+No. It supplies CSS. Your Rails application owns submission, CSRF protection,
+server-side validation and error messages. Native HTML attributes such as
+`required` and `type="email"` still provide browser validation. Set
+`aria-invalid="true"` when your application reports an error and connect the
+written explanation using `aria-describedby`; untouched required fields are not
+coloured red automatically.
+
+**How do the layouts work on mobile?**
+
+Fields fill their container and forms are single-column by default. Optional
+`.form-row` groups become two equal columns from 40em. Use
+`.form-field--short` for a field that should stop growing at 12rem. Button groups
+wrap when space is limited.
+
+**Are dropdowns, date pickers and checkboxes custom widgets?**
+
+No. They keep native browser interactions, including select arrows and date
+pickers. Checkbox, radio and range controls use the primary accent colour where
+the browser supports it. Their appearance can vary by browser and operating
+system. Textareas can be resized vertically.
+
+**Where can I preview everything?**
+
+Run the adjacent demo and open `/components/forms`. It includes a contact form,
+control specimens, error, disabled and read-only states, buttons, markup and
+settings. The contact preview reports success locally without sending or saving
+data; its submit button stays disabled when JavaScript is unavailable.
+
+### Version 0.1.4
+
+Adds opt-in forms and buttons, responsive paired fields, help and error styles,
+native control styling, disabled/read-only states and customisable form settings.
+No existing variable names were removed or renamed. The installer continues to
+preserve existing site stylesheets.

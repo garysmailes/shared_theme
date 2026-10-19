@@ -48,6 +48,13 @@
   --color-primary: #2457d6;
   --color-border: #dfe3e8;
   --color-surface: #f4f5f7;
+  --color-control-border: #858b95;
+  --color-danger: #b42318;
+  --color-on-primary: #ffffff;
+  --color-on-danger: #ffffff;
+  --form-radius: 0.375rem;
+  --form-control-padding: 0.75rem;
+  --form-field-gap: var(--space-6);
   --color-footer-background: #ffffff;
   --color-footer-text: #000000;
 
@@ -390,6 +397,190 @@ pre {
   padding: var(--space-4);
   background: var(--color-surface);
   overflow-x: auto;
+}
+
+/* Forms: opt in with .form; standalone fields can use .form-field. */
+.form {
+  display: grid;
+  gap: var(--form-field-gap);
+}
+
+.form fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.form legend {
+  padding: 0;
+  margin-block-end: var(--space-4);
+  font-weight: var(--font-weight-bold);
+}
+
+.form fieldset > .form-field + .form-field {
+  margin-block-start: var(--form-field-gap);
+}
+
+.form-field {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.form-field > label {
+  font-weight: var(--font-weight-bold);
+}
+
+/* Explicit types preserve native checkbox, file, range and colour controls. */
+:where(.form, .form-field) :is(input:not([type]), input[type="text"], input[type="email"], input[type="password"], input[type="search"], input[type="url"], input[type="tel"], input[type="number"], input[type="date"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="time"], select, textarea) {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 3rem;
+  padding: var(--form-control-padding);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--form-radius);
+  font: inherit;
+  line-height: 1.5;
+}
+
+:where(.form, .form-field) textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+:where(.form, .form-field) :is(input, textarea)::placeholder {
+  color: var(--color-muted);
+  opacity: 1;
+}
+
+:where(.form, .form-field) :is(input, select, textarea):focus {
+  border-color: var(--color-primary);
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+/* Validation is application-controlled; untouched required fields stay neutral. */
+:where(.form, .form-field) [aria-invalid="true"] {
+  border-color: var(--color-danger);
+}
+
+:where(.form, .form-field) :is(input, textarea)[readonly] {
+  background-color: var(--color-surface);
+}
+
+:where(.form, .form-field) :is(input, select, textarea):disabled {
+  color: var(--color-muted);
+  background-color: var(--color-surface);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.form-help,
+.form-error {
+  display: block;
+  margin: 0;
+  font-size: var(--font-size-small);
+}
+
+.form-help { color: var(--color-muted); }
+.form-error { color: var(--color-danger); }
+
+.form-choice,
+.form-field > label:has(input:is([type="checkbox"], [type="radio"])) {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  min-height: 2.75rem;
+  padding-block: var(--space-2);
+  font-weight: var(--font-weight-body);
+  cursor: pointer;
+}
+
+:where(.form, .form-field) input:is([type="checkbox"], [type="radio"]) {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+  accent-color: var(--color-primary);
+}
+
+.form-choice:has(:disabled) { color: var(--color-muted); cursor: not-allowed; }
+
+:where(.form, .form-field) input[type="range"] {
+  width: 100%;
+  min-height: 2.75rem;
+  accent-color: var(--color-primary);
+}
+
+:where(.form, .form-field) input[type="file"] {
+  width: 100%;
+  min-width: 0;
+  padding: var(--space-2);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--form-radius);
+  color: var(--color-muted);
+}
+
+:where(.form, .form-field) input[type="file"]::file-selector-button {
+  margin-inline-end: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: calc(var(--form-radius) / 2);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--form-field-gap);
+}
+
+.form-field--short { max-width: 12rem; }
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 3rem;
+  padding: var(--space-3) var(--space-6);
+  border: 1px solid transparent;
+  border-radius: var(--form-radius);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font: inherit;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button--secondary { background: var(--color-surface); color: var(--color-text); }
+.button--outline { background: transparent; color: var(--color-primary); border-color: currentColor; }
+.button--danger { background: var(--color-danger); color: var(--color-on-danger); }
+.button--small { padding: var(--space-2) var(--space-4); min-height: 2.75rem; font-size: var(--font-size-small); }
+.button--large { padding: var(--space-4) var(--space-8); font-size: var(--font-size-lead); }
+.button:hover:not(:disabled) { text-decoration: underline; text-underline-offset: 0.2em; }
+.button:active:not(:disabled) { transform: translateY(1px); }
+.button:disabled { background: var(--color-surface); color: var(--color-muted); border-color: var(--color-border); cursor: not-allowed; }
+
+@media (min-width: 40em) {
+  .form-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 /* Full-width site header and primary navigation */
