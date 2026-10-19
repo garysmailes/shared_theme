@@ -58,6 +58,7 @@
   --color-footer-background: #ffffff;
   --color-footer-text: #000000;
 
+  --auth-width: 26rem;
   --single-page-width: 70ch;
   --post-content-width: 45rem;
   --post-width: 72.75rem;
@@ -98,6 +99,41 @@ body {
 .single-page__header {
   margin-block-end: var(--space-8);
 }
+
+/* Authentication: a narrow form centred in the available page area. */
+.auth-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+
+.auth-shell > .site-footer { margin-block-start: 0; }
+
+.auth-page {
+  display: grid;
+  place-items: center;
+  flex: 1;
+  width: 100%;
+  padding: var(--space-12) var(--page-padding);
+  overflow-wrap: anywhere;
+}
+
+.auth-page__content {
+  width: 100%;
+  max-width: var(--auth-width);
+  min-width: 0;
+}
+
+.auth-page__header {
+  margin-block-end: var(--space-8);
+  text-align: center;
+}
+
+.auth-page__header h1 { font-size: var(--font-size-h2); }
+.auth-page__header p { margin-bottom: 0; color: var(--color-muted); }
+.auth-page__submit { width: 100%; }
+.auth-page__links { margin-block: var(--space-6) 0; text-align: center; }
+.auth-page__note { margin-block: var(--space-6) 0; text-align: center; }
 
 /* Post: article and supporting author information. */
 .post {
@@ -337,10 +373,6 @@ iframe.content-embed {
 a {
   color: var(--color-primary);
   text-underline-offset: 0.2em;
-}
-
-a:hover {
-  text-decoration-thickness: 0.15em;
 }
 
 :focus-visible {

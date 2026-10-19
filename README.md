@@ -52,7 +52,7 @@ gem "shared_theme",
 Choose one source, not both. The public repository needs no GitHub credentials
 for installation. Git must be available wherever Bundler installs dependencies,
 including the deployment build. The gem is distributed through Git, not RubyGems.
-The current version is `0.1.4`.
+The current version is `0.1.5`.
 
 Bundler records the exact Git revision in the website's `Gemfile.lock`.
 `bundle install` preserves that revision; `bundle update` can fetch newer commits
@@ -719,3 +719,45 @@ Adds opt-in forms and buttons, responsive paired fields, help and error styles,
 native control styling, disabled/read-only states and customisable form settings.
 No existing variable names were removed or renamed. The installer continues to
 preserve existing site stylesheets.
+
+## Authentication layout
+
+Use `auth-shell` on the body and `auth-page` on the main element to centre a
+narrow authentication form between the site header and footer. Wrap its heading,
+form and supporting links in `auth-page__content`. The shell has a minimum height
+of 100svh; the main area grows to fill available space and content scrolls normally
+on short screens. The default `--auth-width: 26rem` (416px at the default font size)
+is a design starting point, adjustable in each website’s `site.css`.
+
+```html
+<body class="auth-shell">
+  <!-- Site header -->
+  <main id="main-content" class="auth-page" tabindex="-1">
+    <div class="auth-page__content">
+      <header class="auth-page__header">
+        <h1>Log in</h1>
+        <p>Welcome back. Enter your details to continue.</p>
+      </header>
+      <!-- Your Rails form: class="form", with .form-field wrappers -->
+      <!-- Submit button: class="button auth-page__submit" -->
+      <!-- Supporting links: class="auth-page__links" -->
+    </div>
+  </main>
+  <!-- Site footer -->
+</body>
+```
+
+Use this same structure for login, account creation and password resets. Keep
+labels visible and use appropriate autocomplete values (`email`,
+`current-password`, `new-password`). The theme supplies layout and styles only;
+each website owns authentication, validation, routes and security. The demo at
+`/components/authentication` links between three non-submitting previews.
+
+
+### Version 0.1.5
+
+Adds the reusable authentication layout and `--auth-width` setting, with a
+26rem default form width for login, account creation and password-reset pages.
+Removes the shared rule that made link underlines thicker on hover. Individual
+websites may still apply their own hover styles. No existing settings are renamed
+or removed; existing site.css files remain untouched.
