@@ -52,7 +52,7 @@ gem "shared_theme",
 Choose one source, not both. The public repository needs no GitHub credentials
 for installation. Git must be available wherever Bundler installs dependencies,
 including the deployment build. The gem is distributed through Git, not RubyGems.
-The current version is `0.1.7`.
+The current version is `0.1.8`.
 
 Bundler records the exact Git revision in the website's `Gemfile.lock`.
 `bundle install` preserves that revision; `bundle update` can fetch newer commits
@@ -825,3 +825,10 @@ reuse `.card`, with `.reference-card` supplying only their vertical margins.
 Existing Posts directories require no migration. Use `.posts.posts--list` with
 the documented list markup to opt in. Demo reference cards now combine
 `.card.reference-card`; `.reference-card` supplies only demo-specific spacing.
+
+## Version 0.1.8
+
+Darkens blockquote borders by using `--color-muted` instead of `--color-border`.
+The default border colour changes from `#dfe3e8` to `#595f69`; sites overriding
+`--color-muted` use their configured colour. Border width and spacing are unchanged.
+No markup migration is required.
