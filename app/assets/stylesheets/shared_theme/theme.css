@@ -60,6 +60,8 @@
 
   --auth-width: 26rem;
   --single-page-width: 70ch;
+  --landing-page-content-width: 70ch;
+  --landing-page-wide-width: 72rem;
   --post-content-width: 45rem;
   --post-width: 72.75rem;
   --posts-width: 72.75rem;
@@ -98,6 +100,35 @@ body {
 
 .single-page__header {
   margin-block-end: var(--space-8);
+}
+
+/* Landing page: centred reading sections with optional wider sections.
+ * Width modifiers belong on direct children of the main wrapper. */
+.landing-page {
+  width: calc(100% - 2 * var(--page-padding));
+  max-width: var(--landing-page-wide-width);
+  margin-inline: auto;
+  padding-block: var(--space-12);
+  display: grid;
+  gap: var(--space-12);
+  overflow-wrap: anywhere;
+}
+
+.landing-page > * {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--landing-page-content-width);
+  min-width: 0;
+  margin-inline: auto;
+  margin-block: 0;
+}
+
+.landing-page > .landing-page__wide {
+  max-width: none;
+}
+
+.landing-page__hero {
+  text-align: center;
 }
 
 /* Authentication: a narrow form centred in the available page area. */

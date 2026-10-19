@@ -52,7 +52,7 @@ gem "shared_theme",
 Choose one source, not both. The public repository needs no GitHub credentials
 for installation. Git must be available wherever Bundler installs dependencies,
 including the deployment build. The gem is distributed through Git, not RubyGems.
-The current version is `0.1.8`.
+The current version is `0.1.9`.
 
 Bundler records the exact Git revision in the website's `Gemfile.lock`.
 `bundle install` preserves that revision; `bundle update` can fetch newer commits
@@ -832,3 +832,48 @@ Darkens blockquote borders by using `--color-muted` instead of `--color-border`.
 The default border colour changes from `#dfe3e8` to `#595f69`; sites overriding
 `--color-muted` use their configured colour. Border width and spacing are unchanged.
 No markup migration is required.
+
+## Landing page layout
+
+Use `main.landing-page` for a page that mixes two centred content widths.
+Direct children default to `--landing-page-content-width: 70ch`. Add
+`landing-page__wide` to any direct child for the outer
+`--landing-page-wide-width: 72rem` width. Both shrink to fit the screen with
+`--page-padding` gutters. These settings are independent of other layouts.
+
+```html
+<main class="landing-page" id="main-content" tabindex="-1">
+  <header class="landing-page__wide landing-page__hero">
+    <h1>Your introduction</h1>
+    <p>A wide, centred introduction.</p>
+  </header>
+  <section>
+    <h2>Your story</h2>
+    <p>Content at the reading width.</p>
+  </section>
+  <section class="landing-page__wide card card--surface">
+    <h2>A featured moment</h2>
+    <p>A wider panel.</p>
+  </section>
+</main>
+```
+
+Group related content in section or div wrappers. Width modifiers apply to
+main's direct children, so a nested element cannot break out of a narrow
+section. `landing-page__hero` optionally centres text; wider sections otherwise
+keep the normal text alignment. Direct children have their outer vertical
+margins reset and are separated by `--space-12`. No JavaScript is needed.
+See `/components/landing-page` in the demo for the live example and copyable HTML.
+
+
+## Version 0.1.9
+
+Adds the opt-in Landing page layout with two centred content widths. Direct
+children of `main.landing-page` use a 70ch reading column; add
+`landing-page__wide` to any direct child for the 72rem outer width. Both widths
+shrink with the shared page gutters. The optional `landing-page__hero` centres
+introductory text.
+
+Customise `--landing-page-content-width` and `--landing-page-wide-width` in
+site.css. The installer template lists both settings for new installations.
+Existing layouts and site.css files remain unchanged; no migration is required.
