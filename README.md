@@ -198,10 +198,10 @@ Keep the site's existing manifest entries, including the entry that exposes
 `site.css`, and use the explicit stylesheet tag shown above. The gem does not
 modify the manifest automatically. Check production compilation before deployment.
 
-The intended first consumer, the Gary Smailes website, currently uses Ruby 3.3.8,
-Rails 8.1 and Sprockets. Its Docker build installs Git and precompiles assets.
-Its manifest will need the entries above during the separate installation task.
-The website has not yet been modified or installed with this gem.
+The Gary Smailes website uses Ruby 3.3.8, Rails 8.1 and Sprockets and has
+installed the gem. Its Docker build installs Git and precompiles assets. It uses
+the bundled stylesheet alternative below; installation and local verification
+do not imply production deployment.
 
 ## Licence
 
@@ -302,3 +302,302 @@ article links use `--font-posts-links: Georgia, "Times New Roman", serif`.
 The reference-matching 48rem breakpoint changes one column to two. No JavaScript
 is needed. The demo guide at `/components/posts` includes a live directory,
 copyable HTML and settings. Single page remains the default layout.
+
+## Sprockets bundled stylesheet alternative
+
+A Sprockets application can retain its existing `stylesheet_link_tag "application"`
+and bundle the files in this exact order in `application.css`:
+
+```css
+/*
+ *= require shared_theme/reset
+ *= require shared_theme/theme
+ *= require site
+ */
+```
+
+Use either this bundle or the three separate stylesheet tags, never both.
+Do not use a broad `require_tree` to select styles or depend on discovery order.
+To expose the shared files separately, the manifest links shown above can instead
+be expressed in `config/initializers/assets.rb`:
+
+```ruby
+Rails.application.config.assets.precompile += %w[ shared_theme/reset.css shared_theme/theme.css ]
+```
+
+These entries compile assets; they do not load them on a page. Verify production
+compilation, the generated asset manifest, and the browser's stylesheet requests.
+Rebuild any static pages after precompiling their referenced assets.
+
+### Self-hosted header font
+
+With Sprockets, a `site.css.erb` can use an asset-aware font URL. It compiles to
+`site.css`, so the logical name above stays `site`. Preserve the font's licence.
+For example, with the WOFF2 in `app/assets/fonts/` and exposed by the asset manifest:
+
+```erb
+@font-face {
+  font-family: "Libre Baskerville";
+  src: url("<%= asset_path('libre-baskerville-latin-400.woff2') %>") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+.site-header .site-brand {
+  font-family: "Libre Baskerville", Georgia, serif;
+}
+```
+
+Scoping this override to the header avoids changing footer brands. Check the
+fingerprinted font URL in production CSS and successful loading in a browser.
+This ERB example is Sprockets-specific. Do not run the installer when managing
+`site.css.erb`: the installer checks only `site.css` and could create a competing
+logical stylesheet. Keep exactly one source for the `site.css` logical asset.
+
+## Complete page shell and navigation
+
+A consuming website owns its HTML and JavaScript. Use its real routes and content;
+the examples below do not require new pages, dropdowns, or a demo installation.
+Use only one `main`, choosing `single-page`, `post`, or `posts` for that page.
+
+```html
+<a href="#main-content" data-turbo="false">Skip to main content</a>
+<header class="site-header" data-controller="navbar"
+  data-action="keydown.esc->navbar#close resize@window->navbar#updateViewport focusin@document->navbar#trackFocus turbo:before-cache@document->navbar#reset">
+  <div class="site-header__inner">
+    <a href="/" class="site-brand">Website name</a>
+    <button type="button" class="site-nav-toggle" hidden
+      aria-expanded="false" aria-controls="primary-menu"
+      data-navbar-target="toggle" data-action="navbar#toggle">
+      <span data-navbar-target="menuIcon"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" fill="none" stroke="currentColor" /></svg></span>
+      <span data-navbar-target="closeIcon" hidden><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M6 18 18 6" fill="none" stroke="currentColor" /></svg></span>
+      <span data-navbar-target="label">Menu</span>
+    </button>
+    <nav id="primary-menu" class="site-nav" aria-label="Primary navigation" data-navbar-target="navigation">
+      <ul class="site-nav__list">
+        <li><a href="/about">About</a></li>
+        <li><a href="/articles">Articles</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main id="main-content" class="single-page" tabindex="-1">
+  <header class="single-page__header"><h1>Page title</h1></header>
+  <div class="prose"><p>Page content.</p></div>
+</main>
+```
+
+Keep the toggle immediately before `.site-nav`: CSS uses the adjacent-sibling
+selector and `aria-expanded` to control visibility. Do not separately hide the
+navigation with a viewport-dependent `hidden` attribute. Below 60em it is a
+disclosure; at and above 60em CSS hides the toggle and shows navigation. Without
+JavaScript the toggle remains hidden and the links remain visible. Add
+`aria-current="page"` to the actual current link; do not use application-menu roles.
+
+The reset sets `svg { display: block }`, which can override native hiding on an
+SVG itself. Put `hidden` on an otherwise unstyled wrapping span, as above, and
+change the wrapper's state. Keep icon accessibility attributes and an accessible
+button name. The theme does not provide a visually hidden skip-link utility;
+a visible skip link is supported. `tabindex="-1"` makes its main target focusable
+without adding it to the normal Tab sequence. In Turbo applications,
+`data-turbo="false"` on the fragment link preserves native navigation. Test Enter
+activation and focus movement, not just a changed fragment URL.
+
+### Stimulus controller example
+
+Save as `app/javascript/controllers/navbar_controller.js` with the application's
+normal Stimulus registration. This is consuming-application code, not supplied or
+installed by the gem. It reads toggle visibility from CSS rather than duplicating
+the 60em breakpoint. Escape closes an open disclosure and restores focus; resizing
+moves focus out of controls that become hidden. The document focus listener
+remembers the last focused element because CSS may blur it before resize handling.
+Turbo caching restores the
+unenhanced state so reconnecting can safely initialise it again.
+
+```javascript
+import { Controller } from "@hotwired/stimulus"
+
+export default class extends Controller {
+  static targets = ["toggle", "navigation", "label", "menuIcon", "closeIcon"]
+
+  connect() {
+    this.focusedElement = document.activeElement
+    this.toggleTarget.hidden = false
+    this.updateViewport()
+  }
+
+  disconnect() {
+    this.reset()
+  }
+
+  toggle() {
+    this.open = !this.open
+    this.render()
+  }
+
+  close(event) {
+    if (!this.mobile || !this.open) return
+
+    event.preventDefault()
+    this.open = false
+    this.render()
+    this.toggleTarget.focus()
+  }
+
+  trackFocus(event) {
+    this.focusedElement = event.target
+  }
+
+  updateViewport() {
+    // CSS can hide and blur a control before the resize event reaches us.
+    const focused = document.activeElement === document.body ? this.focusedElement : document.activeElement
+    const focusInNavigation = this.navigationTarget.contains(focused)
+    const focusOnToggle = this.toggleTarget.contains(focused)
+    // The theme controls the breakpoint; a visible toggle means mobile layout.
+    const mobile = this.toggleTarget.getClientRects().length > 0
+    if (mobile === this.mobile) return
+
+    this.mobile = mobile
+    this.open = false
+    this.render()
+    if (this.mobile && focusInNavigation) this.toggleTarget.focus()
+    if (!this.mobile && focusOnToggle) this.navigationTarget.querySelector("a").focus()
+  }
+
+  render() {
+    const expanded = this.mobile && this.open
+    this.toggleTarget.setAttribute("aria-expanded", String(expanded))
+    this.labelTarget.textContent = expanded ? "Close" : "Menu"
+    this.menuIconTarget.hidden = expanded
+    this.closeIconTarget.hidden = !expanded
+  }
+
+  // Cache the usable, unenhanced markup before Turbo navigation.
+  reset() {
+    this.open = false
+    this.mobile = undefined
+    this.toggleTarget.hidden = true
+    this.toggleTarget.setAttribute("aria-expanded", "false")
+    this.labelTarget.textContent = "Menu"
+    this.menuIconTarget.hidden = false
+    this.closeIconTarget.hidden = true
+  }
+}
+```
+
+## Complete footer markup
+
+The grid class may be placed on a neutral wrapper when it contains several
+separately labelled navigation landmarks and a brand group. One, two, and four
+columns apply below 40em, from 40em, and from 60em respectively. Fewer groups
+occupy the available columns; no filler links are needed.
+
+```html
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__nav">
+      <div class="site-footer__group">
+        <a href="/" class="site-brand">Website name</a>
+        <p>Website description.</p>
+      </div>
+      <nav class="site-footer__group" aria-label="Footer navigation">
+        <h2 class="site-footer__heading">Explore</h2>
+        <ul class="site-footer__links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </nav>
+      <nav class="site-footer__group" aria-label="Legal">
+        <h2 class="site-footer__heading">Legal</h2>
+        <ul class="site-footer__links"><li><a href="/privacy">Privacy Policy</a></li></ul>
+      </nav>
+    </div>
+    <p>Copyright information.</p>
+  </div>
+</footer>
+```
+
+Render the copyright year in the consuming application. Social links can be
+included with accessible names and decorative icons, but the theme currently
+provides no dedicated social-icon row or target-sizing component. Native flow
+is the default; do not assume old site-specific social classes are styled.
+
+## Complete Post content
+
+```html
+<main id="main-content" class="post" tabindex="-1">
+  <article class="post__article" aria-labelledby="page-heading">
+    <header class="post__header">
+      <h1 id="page-heading">Article title</h1>
+      <p class="post__meta">By <a href="/about">Author</a> | <time datetime="2026-01-01">1 January 2026</time></p>
+      <nav class="post__breadcrumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li><span class="post__separator" aria-hidden="true">/</span><a href="/articles">Articles</a></li>
+        </ol>
+      </nav>
+    </header>
+    <nav class="post__toc" aria-labelledby="contents-heading" data-turbo="false">
+      <h2 id="contents-heading">Table of contents</h2>
+      <ul><li><a href="#introduction">Introduction</a></li></ul>
+    </nav>
+    <div class="post__body prose">
+      <h2 id="introduction">Introduction</h2>
+      <p>Article content.</p>
+    </div>
+  </article>
+  <aside class="post__author" aria-labelledby="author-heading">
+    <h2 id="author-heading">About the author</h2>
+    <p>Author biography.</p>
+  </aside>
+</main>
+```
+
+Keep the two columns as direct children of `.post`. Use unique heading IDs and
+omit the contents navigation when there are no entries. `.prose` adds spacing
+before headings that follow prose; it can be used on ordinary pages too.
+`post--drop-cap` remains opt-in and is not necessary for Post layout.
+
+A category listing with an author aside can use the same shell. Replace the
+article with `<section class="post__article" aria-labelledby="page-heading">`,
+put its H1 and description in `post__header`, and put its links inside a
+`posts__category` wrapper and a `ul`. Keep `aside.post__author` as the other direct
+child. This composes existing styles; it does not require a nested `main.post`
+or a `posts` width wrapper inside the column.
+
+## Complete Posts directory
+
+```html
+<main id="main-content" class="posts" tabindex="-1">
+  <header class="posts__header"><h1>Articles</h1><p>Directory introduction.</p></header>
+  <div class="posts__grid">
+    <section class="posts__category">
+      <h2><a href="/articles/example">Example category</a></h2>
+      <ul><li><a href="/articles/example/guide">Example guide</a></li></ul>
+      <a href="/articles/example" class="posts__more">More articles <span aria-hidden="true">→</span></a>
+    </section>
+  </div>
+</main>
+```
+
+Each category is a direct grid child. Put articles assigned directly to a parent
+category in their own headed group, alongside child-category groups. Render an
+empty-state message when there are no published items. Selection, sorting and
+preview limits belong to the website, not the theme. The grid changes to two
+columns at 48rem; Post's sidebar changes at 64rem.
+
+## Integration checks and current limits
+
+Validate against the consuming website's locked Git revision, not only the newest
+README or demo. Check both sides of the 40em footer, 48rem Posts, 60em navigation
+and 64rem Post boundaries, and narrow screens, long headings, links and tables.
+Check page landmarks, keyboard focus, no-JavaScript navigation, Turbo navigation,
+font requests, and any analytics selectors affected by renamed classes.
+
+The theme has `numeric-cell` for right-aligned numeric table headers and cells,
+but no general table component, overflow wrapper, or left/centre alignment
+utilities. Markdown renderers must explicitly map right-aligned cells to
+`numeric-cell` if desired. Do not assume legacy `table-align-*` classes are styled.
+Test the site's actual content; unusually wide tables may require a separately
+agreed shared-theme enhancement. The same applies to any other missing reusable
+component: document the limitation rather than claiming it is implemented.
