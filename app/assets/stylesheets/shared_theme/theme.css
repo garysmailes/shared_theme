@@ -316,6 +316,16 @@ figcaption {
   width: 100%;
 }
 
+/* Opt-in video embeds: HTML dimensions remain useful fallbacks without CSS. */
+iframe.content-embed {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  margin-block: var(--space-8);
+}
+
 /* Links and keyboard focus */
 a {
   color: var(--color-primary);

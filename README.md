@@ -260,6 +260,34 @@ Use lazy loading for images below the initial viewport, not the main image visib
 on page load. Add `srcset` and `sizes` in the consuming website when multiple image
 resolutions are available; CSS controls layout, not which file is downloaded.
 
+## Responsive video embeds
+
+Add `content-embed` directly to an iframe in the normal content flow:
+
+```html
+<iframe
+  class="content-embed"
+  src="https://www.youtube.com/embed/VIDEO_ID"
+  title="Descriptive video title"
+  width="560"
+  height="315"
+  allowfullscreen
+  loading="lazy"
+></iframe>
+```
+
+Replace `VIDEO_ID` with the video's ID and give each iframe a descriptive title.
+Use the provider's embed URL, not its ordinary watch-page URL. The HTML dimensions
+are fallbacks; shared CSS sets the width to 100% of the container and overrides
+the height with `height: auto` and a 16:9 aspect ratio. The iframe is a borderless
+block with `--space-8` top and bottom margins. Consecutive embeds in normal block
+flow stack vertically at every viewport width; adjacent vertical margins can
+collapse to one spacing unit. No wrapper, website-specific CSS or JavaScript is
+needed. A consuming site's explicit flex or grid layout can change normal flow.
+
+Only `iframe.content-embed` is styled. Other iframes retain their existing styles.
+The demo at `/components/video-embeds` contains two consecutive embeds.
+
 ## Single page layout
 
 Use `<main class="single-page" id="main-content" tabindex="-1">` for the page
