@@ -52,7 +52,7 @@ gem "shared_theme",
 Choose one source, not both. The public repository needs no GitHub credentials
 for installation. Git must be available wherever Bundler installs dependencies,
 including the deployment build. The gem is distributed through Git, not RubyGems.
-The current version is `0.1.6`.
+The current version is `0.1.7`.
 
 Bundler records the exact Git revision in the website's `Gemfile.lock`.
 `bundle install` preserves that revision; `bundle update` can fetch newer commits
@@ -782,3 +782,46 @@ For multiple blocks, add `.post__sidebar-section` wrappers to gain dividers and
 section spacing; changing the container to `.post__sidebar` is recommended but
 not required. No settings were removed or renamed. The demo Post guide shows an
 author introduction, a non-submitting newsletter preview and related links.
+
+## Single-column Posts variant
+
+Keep `main.posts` and the existing `posts__grid` markup for the two-column topic
+directory. For an individual-post index, choose `main.posts.posts--list` and a
+`ul.posts__list` containing `li.posts__item` entries. Each item contains an
+`article`, an optional `p.posts__meta`, a linked `h2.posts__title` and a
+`p.posts__excerpt`. Dates use `time` with a machine-readable `datetime`; linked
+categories and dates are independently optional. Omit the metadata paragraph
+when both are absent. There are no metadata separators to leave dangling.
+
+The list has no images, pagination or JavaScript. Each article uses
+`class="card card--surface"` for a light-grey background, subtle border, rounded
+corners and padding. It remains one
+column at every width, centred at `--post-content-width` (45rem by default),
+with shared page gutters, left-aligned text and generous spacing between cards. That width setting also controls article content; override it
+on `.posts--list` if only the list should change. Keep the header and show a
+clear message instead of an empty list when there are no posts.
+
+The demo's `/components/posts` guide links to both previews; use
+`/components/posts?layout=list` for the list. These are documentation preview
+links, not production visitor controls. The site author selects the markup for
+each page. Copyable list HTML and the live example both render
+`app/views/shared/_posts_list.html.erb`. The demo includes all four combinations
+of optional date/category metadata and illustrative dates.
+
+## Shared cards
+
+Use `.card` for padding, a subtle border and rounded corners. Add
+`.card--surface` for the existing `--color-surface` light-grey background.
+The containing layout controls spacing between cards. The demo reference cards
+reuse `.card`, with `.reference-card` supplying only their vertical margins.
+
+## Version 0.1.7
+
+- Added the opt-in `posts--list` layout: one column, optional metadata, no images
+  or pagination, and a 45rem default width. The existing directory is unchanged.
+- Added reusable `.card` and `.card--surface` classes. Surface cards use the
+  existing grey background and stronger border colour settings.
+
+Existing Posts directories require no migration. Use `.posts.posts--list` with
+the documented list markup to opt in. Demo reference cards now combine
+`.card.reference-card`; `.reference-card` supplies only demo-specific spacing.

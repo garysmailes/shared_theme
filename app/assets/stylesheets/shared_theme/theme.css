@@ -805,6 +805,18 @@ pre {
   outline-color: currentColor;
 }
 
+/* Shared cards; spacing between cards belongs to their containing layout. */
+.card {
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+}
+
+.card--surface {
+  background: var(--color-surface);
+  border-color: var(--color-control-border);
+}
+
 /* Posts: a topic directory matching the reference Articles index. */
 .posts {
   width: calc(100% - 2 * var(--page-padding));
@@ -894,6 +906,61 @@ pre {
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
+
+/* Posts list: opt in per page with main.posts.posts--list. */
+.posts--list {
+  max-width: var(--post-content-width);
+}
+
+.posts--list .posts__header {
+  justify-items: start;
+  gap: var(--space-4);
+  padding-block: var(--space-8) var(--space-12);
+  text-align: left;
+}
+
+.posts--list .posts__header p {
+  font-family: var(--font-body);
+}
+
+.posts--list .posts__list {
+  display: grid;
+  gap: var(--space-6);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.posts--list .posts__item {
+  margin: 0;
+}
+
+.posts--list .posts__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-4);
+  margin: 0 0 var(--space-2);
+  color: var(--color-muted);
+  font-size: var(--font-size-small);
+}
+
+.posts--list .posts__title {
+  margin: 0 0 var(--space-3);
+  font-size: var(--font-size-h3);
+}
+
+.posts--list .posts__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.posts--list .posts__title a:hover,
+.posts--list .posts__title a:focus-visible {
+  text-decoration: underline;
+}
+
+.posts--list .posts__excerpt { margin: 0; }
 
 /* Shared responsive breakpoints
  * Base rules above apply at every width, starting with small screens.
