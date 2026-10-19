@@ -52,7 +52,7 @@ gem "shared_theme",
 Choose one source, not both. The public repository needs no GitHub credentials
 for installation. Git must be available wherever Bundler installs dependencies,
 including the deployment build. The gem is distributed through Git, not RubyGems.
-The current version is `0.1.9`.
+The current version is `0.1.10`.
 
 Bundler records the exact Git revision in the website's `Gemfile.lock`.
 `bundle install` preserves that revision; `bundle update` can fetch newer commits
@@ -877,3 +877,11 @@ introductory text.
 Customise `--landing-page-content-width` and `--landing-page-wide-width` in
 site.css. The installer template lists both settings for new installations.
 Existing layouts and site.css files remain unchanged; no migration is required.
+
+
+## Version 0.1.10
+
+Secondary buttons now have a visible 1px border using `--color-muted`, while
+retaining their surface background and normal text colour. Disabled buttons
+continue to use `--color-border`. Existing markup and site.css files need no
+migration.

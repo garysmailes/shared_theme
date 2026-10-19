@@ -659,7 +659,7 @@ pre {
   cursor: pointer;
 }
 
-.button--secondary { background: var(--color-surface); color: var(--color-text); }
+.button--secondary { background: var(--color-surface); color: var(--color-text); border-color: var(--color-muted); }
 .button--outline { background: transparent; color: var(--color-primary); border-color: currentColor; }
 .button--danger { background: var(--color-danger); color: var(--color-on-danger); }
 .button--small { padding: var(--space-2) var(--space-4); min-height: 2.75rem; font-size: var(--font-size-small); }
