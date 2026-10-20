@@ -52,7 +52,7 @@ gem "shared_theme",
 Choose one source, not both. The public repository needs no GitHub credentials
 for installation. Git must be available wherever Bundler installs dependencies,
 including the deployment build. The gem is distributed through Git, not RubyGems.
-The current version is `0.1.10`.
+The current version is `2.0.0`.
 
 Bundler records the exact Git revision in the website's `Gemfile.lock`.
 `bundle install` preserves that revision; `bundle update` can fetch newer commits
@@ -885,3 +885,49 @@ Secondary buttons now have a visible 1px border using `--color-muted`, while
 retaining their surface background and normal text colour. Disabled buttons
 continue to use `--color-border`. Existing markup and site.css files need no
 migration.
+
+## Admin layout
+
+Use `admin-shell` on body and `admin-layout` on the single main wrapper beneath
+an existing site header. Put an `admin-sidebar` wrapper first and an
+`admin-content` wrapper second. Keep the existing footer outside main.
+The layout fills the available page width; at 60em it uses a narrow left column
+and a flexible content column. Override `--admin-sidebar-width` (11.25rem by
+default) in site.css. Long menus scroll naturally with the document.
+
+Inside the sidebar, use a labelled `nav.admin-nav`, `ul.admin-nav__list`, and
+`a.admin-nav__link` links with decorative inline SVGs and text labels. Applications
+supply their own links and mark the current link with `aria-current="page"`.
+Home and Inbox in the demo are replaceable examples, not built-in admin features.
+
+For the mobile disclosure, copy the demo's existing `navigation_controller.js`
+and register it with Stimulus as `navigation`. Apply `data-controller="navigation"`
+and `data-action="keydown.esc->navigation#close resize@window->navigation#resize"`
+to the sidebar wrapper. Immediately before the nav, place a hidden
+`button.admin-menu-toggle` labelled Menu with `aria-expanded="false"`,
+`aria-controls` matching the nav ID, `data-navigation-target="toggle"`, and
+`data-action="navigation#toggle"`. Use a unique nav ID, separate from the header.
+Below 60em this button expands links above the content. Escape closes the menu
+and focuses the button. With no JavaScript the links remain visible. At desktop
+width the links always show and the button is hidden.
+
+See `/components/admin` in the demo for the live layout, copyable HTML and menu
+controller. These are opt-in classes; existing layouts require no changes.
+
+
+## Version 2.0.0
+
+Adds the opt-in Admin layout: a full-width workspace with a narrow sidebar,
+decorative icons, application-selected active links and expandable mobile
+navigation. The default sidebar width is 11.25rem, configurable through
+`--admin-sidebar-width`; the right-hand content fills the remaining width.
+The installer settings template includes this new setting.
+
+Existing layouts and site.css overrides continue to work without migration.
+To adopt Admin, add the documented layout markup and the navigation controller
+from the demo. Applications provide their own destinations and current-page
+state. This release does not add authentication or backend admin functionality.
+
+The version advances directly from 0.1.10 to 2.0.0. Rails requirements remain
+unchanged (8.1.x, with Ruby >= 3.2 declared by the gem). Sites with a version
+constraint such as `~> 0.1` must update that constraint before upgrading.
