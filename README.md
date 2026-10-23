@@ -931,3 +931,19 @@ state. This release does not add authentication or backend admin functionality.
 The version advances directly from 0.1.10 to 2.0.0. Rails requirements remain
 unchanged (8.1.x, with Ruby >= 3.2 declared by the gem). Sites with a version
 constraint such as `~> 0.1` must update that constraint before upgrading.
+
+### Account dropdown
+
+Add `site-nav--account` to `.site-nav` for an always-compact, right-aligned
+account dropdown. Unlike the existing split-link navigation groups, its full
+text toggle works on mobile and desktop. Use `.site-nav__dropdown-toggle`
+immediately before `.site-nav__submenu`. Submenu links and form buttons share
+styling; logout must remain a real POST form (with Rails DELETE override and CSRF).
+
+Initially hide the toggle, leaving actions visible without JavaScript. The host
+app owns the Stimulus controller: reveal the toggle on connect, set
+`aria-expanded`, close on outside click/focus and Escape (returning focus to the
+toggle on Escape), and hide/reset the toggle before Turbo caching and disconnect.
+Use matching `aria-controls` and submenu IDs, ordinary list markup and natural
+Tab navigation. Do not add ARIA menu roles. The theme-demo Navbar guide includes
+a working example and a copyable controller.
