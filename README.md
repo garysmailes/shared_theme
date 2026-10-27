@@ -52,7 +52,7 @@ gem "shared_theme",
 Choose one source, not both. The public repository needs no GitHub credentials
 for installation. Git must be available wherever Bundler installs dependencies,
 including the deployment build. The gem is distributed through Git, not RubyGems.
-The current version is `2.0.0`.
+The current version is `2.1.0`.
 
 Bundler records the exact Git revision in the website's `Gemfile.lock`.
 `bundle install` preserves that revision; `bundle update` can fetch newer commits
@@ -227,6 +227,17 @@ remain owned by the consuming website.
 The Footer guide at `/components/footer` documents grouped navigation, the
 `--color-footer-background` and `--color-footer-text` settings, and the one-, two-
 and four-column layouts. The footer requires no JavaScript.
+
+The Course page guide at `/components/course-page` demonstrates the shared
+responsive course workspace: nested module and lesson navigation, a lesson
+reading column and a lesson contents panel. It inherits the site's typography
+and uses native disclosures for mobile navigation. From 80rem, the left course
+rail aligns with the viewport edge, the lesson centres between the rails, and
+lesson contents align near the right edge. The demo includes a small
+Stimulus controller that opens the panels on wide screens and collapses them on
+mobile; copy it into the consuming website to get those responsive defaults.
+The consuming website owns the course data, lesson URLs and content; the layout
+does not add enrollment or progress tracking.
 
 ## Images and captions
 
@@ -914,6 +925,15 @@ width the links always show and the button is hidden.
 See `/components/admin` in the demo for the live layout, copyable HTML and menu
 controller. These are opt-in classes; existing layouts require no changes.
 
+
+## Version 2.1.0
+
+Adds the opt-in Course page layout, with responsive course/module/lesson
+navigation, a lesson reading column and a lesson contents rail. The shared theme
+provides the CSS; consuming websites provide the markup, course data, lesson
+routes and content. The demo includes a small Stimulus controller to open the
+side panels on wide screens and collapse them on mobile. Existing layouts do not
+change and require no migration.
 
 ## Version 2.0.0
 
