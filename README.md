@@ -52,7 +52,7 @@ gem "shared_theme",
 Choose one source, not both. The public repository needs no GitHub credentials
 for installation. Git must be available wherever Bundler installs dependencies,
 including the deployment build. The gem is distributed through Git, not RubyGems.
-The current version is `2.4.0`.
+The current version is `2.4.1`.
 
 Bundler records the exact Git revision in the website's `Gemfile.lock`.
 `bundle install` preserves that revision; `bundle update` can fetch newer commits
@@ -1061,3 +1061,15 @@ CSS and settings. The companion theme-demo includes example ERB and copyable
 HTML under Layouts → Course overview. Its Course index View links and lesson
 Back to course links now open the overview. No progress persistence is added.
 Rails and Ruby requirements are unchanged.
+
+## Version 2.4.1
+
+Refines the Course page’s left navigation hierarchy: the course title uses the
+darkest text, module headings use an intermediate grey, and lesson links use
+the lighter muted text colour. The current lesson uses italics and regular
+weight, retaining its background highlight. Colours follow the existing theme
+text and muted settings; module colour blends those two values.
+
+No markup changes, new settings or migration are required. Other layouts and
+Rails/Ruby requirements are unchanged. Recompile application assets when
+updating to pick up the revised styles.

@@ -323,7 +323,7 @@ body {
 }
 
 .course-page__panel-content { padding: var(--space-4); }
-.course-page__course-title { margin-block: 0 var(--space-4); font-size: var(--font-size-h3); }
+.course-page__course-title { margin-block: 0 var(--space-4); font-size: var(--font-size-h3); color: var(--color-text); }
 .course-page__contents-title { margin-block: 0 var(--space-4); font-size: var(--font-size-h4); }
 .course-page__modules,
 .course-page__lessons,
@@ -338,7 +338,8 @@ body {
 .course-page__modules > li + li { border-block-start: 1px solid var(--color-border); }
 .course-page__module > summary {
   padding-block: var(--space-3);
-  font-weight: var(--font-weight-bold);
+  color: color-mix(in srgb, var(--color-text) 55%, var(--color-muted));
+  font-weight: var(--font-weight-body);
   cursor: pointer;
 }
 
@@ -347,7 +348,7 @@ body {
   display: block;
   padding: var(--space-2) var(--space-3);
   border-radius: 0.25rem;
-  color: var(--color-text);
+  color: var(--color-muted);
   text-decoration: none;
 }
 
@@ -355,8 +356,9 @@ body {
 .course-page__lessons a:focus-visible { background: var(--color-surface); }
 .course-page__lessons a[aria-current="page"] {
   background: var(--color-surface);
-  color: var(--color-text);
-  font-weight: var(--font-weight-bold);
+  color: var(--color-muted);
+  font-style: italic;
+  font-weight: var(--font-weight-body);
 }
 
 .course-page__lesson { max-width: 70ch; margin-inline: auto; }
