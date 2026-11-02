@@ -52,7 +52,7 @@ gem "shared_theme",
 Choose one source, not both. The public repository needs no GitHub credentials
 for installation. Git must be available wherever Bundler installs dependencies,
 including the deployment build. The gem is distributed through Git, not RubyGems.
-The current version is `2.1.0`.
+The current version is `2.2.0`.
 
 Bundler records the exact Git revision in the website's `Gemfile.lock`.
 `bundle install` preserves that revision; `bundle update` can fetch newer commits
@@ -967,3 +967,37 @@ toggle on Escape), and hide/reset the toggle before Turbo caching and disconnect
 Use matching `aria-controls` and submenu IDs, ordinary list markup and natural
 Tab navigation. Do not add ARIA menu roles. The theme-demo Navbar guide includes
 a working example and a copyable controller.
+
+## Course dashboard layout
+
+Open `/components/course-dashboard` in the demo (Layouts → Course dashboard).
+Use `?state=empty` to preview the empty state. The live example and copyable HTML
+share `app/views/shared/_course_dashboard.html.erb` with `courses` and `browse_url`
+locals. Use `course-dashboard` on the single main wrapper, keeping the header
+and footer. Override `--course-dashboard-width` (48rem) in site.css if needed.
+
+Supply enrolled courses in most-recently-accessed order, with never-accessed
+courses last in an application-selected stable order. Each course supplies
+`title`, `lessons`, `progress` (0–100) and `url`. Start (0%) and Review (100%)
+lead to the first lesson; Continue (1–99%) leads to the next unfinished lesson.
+Applications calculate progress, sort enrolments and supply the URLs. The theme
+provides presentation only, with no authentication or saved progress.
+
+The circular indicators include accessible text labels. Below 40em, action
+links wrap underneath course details; wider screens show all three columns.
+No JavaScript is required. The empty state offers a Browse courses link.
+Demo course links open the existing Ruby lesson preview, and the demo browse
+link opens the layout index; replace them with application destinations.
+
+## Version 2.2.0
+
+Adds the opt-in Course dashboard layout for enrolled courses, with circular
+completion indicators, lesson counts, Start/Continue/Review actions and an empty
+state. Rows adapt to narrow screens without JavaScript. The new
+`--course-dashboard-width` setting defaults to 48rem and is included in the
+installer template.
+
+Existing layouts and site.css overrides require no migration. Applications
+adopting this layout supply its markup, ordered enrolments, progress and links;
+the gem ships the shared CSS and settings, while the companion theme-demo
+provides example ERB and copyable HTML. Rails and Ruby requirements are unchanged.
