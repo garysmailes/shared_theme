@@ -52,7 +52,7 @@ gem "shared_theme",
 Choose one source, not both. The public repository needs no GitHub credentials
 for installation. Git must be available wherever Bundler installs dependencies,
 including the deployment build. The gem is distributed through Git, not RubyGems.
-The current version is `2.4.2`.
+The current version is `2.5.0`.
 
 Bundler records the exact Git revision in the website's `Gemfile.lock`.
 `bundle install` preserves that revision; `bundle update` can fetch newer commits
@@ -1097,3 +1097,30 @@ No markup changes, new settings or migration are required. Other layouts and
 Rails/Ruby requirements are unchanged. Recompile application assets after
 updating. The companion theme-demo now uses the supplied Marketing Strategy
 lesson and its two diagrams as the default lesson preview.
+
+### Course lesson actions
+
+Place `.course-page__lesson-actions` at the end of the lesson article. It lays
+out a primary Mark Complete button and a secondary Next link, stacking them at
+narrow widths. Use `.course-page__completion` and `.course-page__next` on the
+controls. Next uses a short label and may include a decorative arrow icon.
+
+The theme supplies presentation only. Applications connect Mark Complete to a
+CSRF-protected form or their own progress controller and provide the next lesson
+URL. For an already completed lesson, render a disabled Completed button with a
+check icon. On the final lesson, replace Next with a Course Overview link. The
+theme-demo Course page guide includes unfinished, completed and final examples.
+
+## Version 2.5.0
+
+Adds an opt-in lesson-action footer to the Course page layout. It presents a
+primary Mark Complete control and a secondary Next link with a decorative arrow,
+then stacks both controls at narrow widths. Completed lessons can show a disabled
+Completed control with a check icon; final lessons replace Next with Course
+Overview.
+
+The theme supplies presentation only. Applications remain responsible for
+persisting progress, protecting completion requests, determining the next lesson
+and supplying all destinations. Existing Course page markup continues to work;
+adopting the footer requires adding the documented action markup. Other layouts,
+theme settings and Rails/Ruby requirements are unchanged.

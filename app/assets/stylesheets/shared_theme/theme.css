@@ -373,6 +373,41 @@ body {
 /* Figures already provide the outer spacing; keep captions close to images. */
 .course-page__lesson figure img { margin-block: 0; }
 
+.course-page__lesson-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-block-start: var(--space-12);
+  padding-block-start: var(--space-8);
+}
+.course-page__lesson-actions .button {
+  margin: 0;
+  text-align: center;
+}
+.course-page__completion { flex: 1 1 15rem; }
+.course-page__next {
+  flex: 1 1 8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+.course-page__lesson-actions svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+@media (min-width: 40em) {
+  .course-page__completion { flex: 0 1 15rem; }
+  .course-page__next { flex: 0 1 8rem; }
+}
+
 .course-page__back { margin-block: 0 var(--space-6); font-size: var(--font-size-small); }
 .course-page__lesson h1 { margin-block: 0 var(--space-8); }
 .course-page__lesson section + section { margin-block-start: var(--space-8); }
