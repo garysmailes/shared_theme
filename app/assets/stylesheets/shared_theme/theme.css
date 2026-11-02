@@ -362,6 +362,17 @@ body {
 }
 
 .course-page__lesson { max-width: 70ch; margin-inline: auto; }
+/* Covers ordinary Markdown images, including images wrapped in paragraphs. */
+.course-page__lesson img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-block: var(--space-8);
+  margin-inline: auto;
+}
+/* Figures already provide the outer spacing; keep captions close to images. */
+.course-page__lesson figure img { margin-block: 0; }
+
 .course-page__back { margin-block: 0 var(--space-6); font-size: var(--font-size-small); }
 .course-page__lesson h1 { margin-block: 0 var(--space-8); }
 .course-page__lesson section + section { margin-block-start: var(--space-8); }

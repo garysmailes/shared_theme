@@ -52,7 +52,7 @@ gem "shared_theme",
 Choose one source, not both. The public repository needs no GitHub credentials
 for installation. Git must be available wherever Bundler installs dependencies,
 including the deployment build. The gem is distributed through Git, not RubyGems.
-The current version is `2.4.1`.
+The current version is `2.4.2`.
 
 Bundler records the exact Git revision in the website's `Gemfile.lock`.
 `bundle install` preserves that revision; `bundle update` can fetch newer commits
@@ -1073,3 +1073,27 @@ text and muted settings; module colour blends those two values.
 No markup changes, new settings or migration are required. Other layouts and
 Rails/Ruby requirements are unchanged. Recompile application assets when
 updating to pick up the revised styles.
+
+### Images in course lessons
+
+Images inside `.course-page__lesson` are centred, constrained to the reading
+column and keep their natural proportions. They have `--space-8` (32px by
+default) above and below, including standard Markdown images inside paragraphs.
+For images inside figures, the figure supplies the outer spacing and the image
+has no additional vertical margin, keeping captions close. Other layouts are
+unaffected. The default Course page demo uses the supplied Marketing Strategy
+lesson with its marketing funnel and messy-middle diagrams; Ruby lesson links
+remain available as additional layout examples.
+
+## Version 2.4.2
+
+Adds consistent spacing around images in Course page lesson content. Images
+inside `.course-page__lesson` receive `--space-8` (32px by default) above and
+below, stay centred, fit the reading column and retain their proportions.
+This includes ordinary Markdown images wrapped in paragraphs. Images inside
+figures use the figure’s existing outer spacing to keep captions close.
+
+No markup changes, new settings or migration are required. Other layouts and
+Rails/Ruby requirements are unchanged. Recompile application assets after
+updating. The companion theme-demo now uses the supplied Marketing Strategy
+lesson and its two diagrams as the default lesson preview.
