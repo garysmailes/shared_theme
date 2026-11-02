@@ -52,7 +52,7 @@ gem "shared_theme",
 Choose one source, not both. The public repository needs no GitHub credentials
 for installation. Git must be available wherever Bundler installs dependencies,
 including the deployment build. The gem is distributed through Git, not RubyGems.
-The current version is `2.2.0`.
+The current version is `2.3.0`.
 
 Bundler records the exact Git revision in the website's `Gemfile.lock`.
 `bundle install` preserves that revision; `bundle update` can fetch newer commits
@@ -987,7 +987,7 @@ The circular indicators include accessible text labels. Below 40em, action
 links wrap underneath course details; wider screens show all three columns.
 No JavaScript is required. The empty state offers a Browse courses link.
 Demo course links open the existing Ruby lesson preview, and the demo browse
-link opens the layout index; replace them with application destinations.
+link opens the Course index preview; replace them with application destinations.
 
 ## Version 2.2.0
 
@@ -1001,3 +1001,32 @@ Existing layouts and site.css overrides require no migration. Applications
 adopting this layout supply its markup, ordered enrolments, progress and links;
 the gem ships the shared CSS and settings, while the companion theme-demo
 provides example ERB and copyable HTML. Rails and Ruby requirements are unchanged.
+
+## Course index layout
+
+Open `/components/course-index` from Layouts → Course index in the demo.
+`main.course-index` shows All Courses above a vertical catalogue of bordered
+cards with circular artwork, titles, Select/View actions and descriptions.
+Override `--course-index-width` (56rem) in site.css. Actions wrap below the
+heading on narrow screens. The existing site header and footer remain visible.
+
+The shared theme supplies CSS and installer settings. The demo partial
+`shared/_course_index.html.erb` and its copyable HTML demonstrate the markup.
+Applications provide titles, descriptions, artwork and action destinations.
+Demo Select links open the dashboard without saving enrolment; View links open
+the existing lesson preview. Use a CSRF-protected form when selection changes
+application data. No JavaScript or backend course functionality is included.
+
+## Version 2.3.0
+
+Adds the opt-in Course index layout: a course catalogue with circular artwork,
+course titles, Select/View actions and descriptions in bordered cards. Actions
+wrap below the heading on narrow screens. The new `--course-index-width`
+setting defaults to 56rem and is included in the installer template.
+
+Existing layouts and site.css overrides require no migration. Applications
+supply the catalogue markup, course data, artwork, action destinations and any
+enrolment behaviour. The gem supplies CSS and settings; the companion theme-demo
+includes example ERB and copyable HTML under Layouts → Course index. The demo
+dashboard’s Browse courses link now opens that catalogue preview.
+Rails and Ruby requirements are unchanged.
