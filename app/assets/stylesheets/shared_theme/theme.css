@@ -59,6 +59,7 @@
   --color-footer-text: #000000;
 
   --admin-sidebar-width: 11.25rem;
+  --course-overview-width: 48rem;
   --course-index-width: 56rem;
   --course-dashboard-width: 48rem;
   --auth-width: 26rem;
@@ -1474,3 +1475,30 @@ pre {
   .course-index__actions { width: auto; }
   .course-index__actions .button { min-width: 8rem; }
 }
+
+/* Course outline with module cards and read-only lesson completion. */
+.course-overview {
+  width: 100%; max-width: calc(var(--course-overview-width) + 2 * var(--page-padding));
+  margin-inline: auto; padding: var(--space-12) var(--page-padding);
+}
+.course-overview__header { text-align: center; margin-block-end: var(--space-8); }
+.course-overview__badge { position: relative; width: 7rem; height: 7rem; margin: 0 auto var(--space-6); }
+.course-overview__ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+.course-overview__track { stroke: var(--color-border); }
+.course-overview__fill { stroke: var(--color-primary); }
+.course-overview__icon { position: absolute; inset: 30%; width: 40%; height: 40%; color: var(--color-primary); }
+.course-overview__header h1 { margin: 0; }
+.course-overview__progress { color: var(--color-muted); margin: var(--space-3) 0 0; }
+.course-overview__intro { margin-block-end: var(--space-8); }
+.course-overview__intro h2 { font-size: var(--font-size-h4); margin: 0 0 var(--space-2); }
+.course-overview__intro p { color: var(--color-muted); margin: 0; }
+.course-overview__modules { display: grid; gap: var(--space-8); }
+.course-overview__module { border: 1px solid var(--color-border); border-radius: var(--form-radius); background: var(--color-background); overflow: hidden; }
+.course-overview__module h2 { margin: 0; padding: var(--space-4) var(--space-6); font-size: var(--font-size-h4); border-block-end: 1px solid var(--color-border); }
+.course-overview__lessons { list-style: none; padding: var(--space-3) 0; margin: 0; }
+.course-overview__lesson { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4) var(--space-6); }
+.course-overview__lesson-icon { width: 1.25rem; height: 1.25rem; flex-shrink: 0; color: var(--color-muted); }
+.course-overview__lesson a { flex: 1; min-width: 0; color: var(--color-text); text-decoration: none; overflow-wrap: anywhere; }
+.course-overview__lesson a:hover, .course-overview__lesson a:focus-visible { color: var(--color-primary); text-decoration: underline; }
+.course-overview__status { width: 1.5rem; height: 1.5rem; flex-shrink: 0; color: var(--color-muted); }
+.course-overview__status--complete { color: var(--color-primary); }

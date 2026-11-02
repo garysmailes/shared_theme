@@ -52,7 +52,7 @@ gem "shared_theme",
 Choose one source, not both. The public repository needs no GitHub credentials
 for installation. Git must be available wherever Bundler installs dependencies,
 including the deployment build. The gem is distributed through Git, not RubyGems.
-The current version is `2.3.0`.
+The current version is `2.4.0`.
 
 Bundler records the exact Git revision in the website's `Gemfile.lock`.
 `bundle install` preserves that revision; `bundle update` can fetch newer commits
@@ -1014,7 +1014,7 @@ The shared theme supplies CSS and installer settings. The demo partial
 `shared/_course_index.html.erb` and its copyable HTML demonstrate the markup.
 Applications provide titles, descriptions, artwork and action destinations.
 Demo Select links open the dashboard without saving enrolment; View links open
-the existing lesson preview. Use a CSRF-protected form when selection changes
+the Ruby course overview preview. Use a CSRF-protected form when selection changes
 application data. No JavaScript or backend course functionality is included.
 
 ## Version 2.3.0
@@ -1029,4 +1029,35 @@ supply the catalogue markup, course data, artwork, action destinations and any
 enrolment behaviour. The gem supplies CSS and settings; the companion theme-demo
 includes example ERB and copyable HTML under Layouts → Course index. The demo
 dashboard’s Browse courses link now opens that catalogue preview.
+Rails and Ruby requirements are unchanged.
+
+## Course overview layout
+
+Open `/components/course-overview` from Layouts → Course overview. Use
+`course-overview` on the single main wrapper with the existing header and footer.
+A centred course badge and progress ring precede the title and overview text.
+Module cards show ordered lesson links, book icons and read-only completion
+indicators. All modules stay expanded; long lesson names wrap on narrow screens.
+Override `--course-overview-width` (48rem) in site.css.
+
+The demo uses the same Ruby course data as the lesson page, with six of fifteen
+lessons completed (40%). Lesson links open their matching lesson; Back to course
+returns to the overview. Course index View links open this Ruby overview as a
+sample. Applications supply course content, lesson URLs, completed lessons and
+progress from 0–100. No progress persistence or JavaScript is included. Copyable
+HTML and the live example share `shared/_course_overview.html.erb`.
+
+## Version 2.4.0
+
+Adds the opt-in Course overview layout with a centred course badge and progress
+ring, overview text, and module cards containing lesson links and read-only
+completion indicators. Lesson titles wrap on narrow screens, and completion
+states include accessible labels. The new `--course-overview-width` setting
+defaults to 48rem and is included in the installer template.
+
+Existing layouts and site.css overrides require no migration. Applications
+supply course markup, content, lesson URLs and completion data; the gem supplies
+CSS and settings. The companion theme-demo includes example ERB and copyable
+HTML under Layouts → Course overview. Its Course index View links and lesson
+Back to course links now open the overview. No progress persistence is added.
 Rails and Ruby requirements are unchanged.
