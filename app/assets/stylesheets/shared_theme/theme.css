@@ -335,9 +335,8 @@ body {
 
 .course-page__course-panel nav { font-size: 0.9375rem; }
 
-.course-page__modules > li + li { border-block-start: 1px solid var(--color-border); }
 .course-page__module > summary {
-  padding-block: var(--space-3);
+  padding-block: var(--space-2);
   color: color-mix(in srgb, var(--color-text) 55%, var(--color-muted));
   font-weight: var(--font-weight-body);
   cursor: pointer;
@@ -346,7 +345,7 @@ body {
 .course-page__lessons { padding-block-end: var(--space-2); }
 .course-page__lessons a {
   display: block;
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-1) var(--space-3);
   border-radius: 0.25rem;
   color: var(--color-muted);
   text-decoration: none;
