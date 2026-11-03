@@ -52,7 +52,7 @@ gem "shared_theme",
 Choose one source, not both. The public repository needs no GitHub credentials
 for installation. Git must be available wherever Bundler installs dependencies,
 including the deployment build. The gem is distributed through Git, not RubyGems.
-The current version is `2.5.1`.
+The current version is `2.6.0`.
 
 Bundler records the exact Git revision in the website's `Gemfile.lock`.
 `bundle install` preserves that revision; `bundle update` can fetch newer commits
@@ -237,7 +237,9 @@ lesson contents align near the right edge. The demo includes a small
 Stimulus controller that opens the panels on wide screens and collapses them on
 mobile; copy it into the consuming website to get those responsive defaults.
 The consuming website owns the course data, lesson URLs and content; the layout
-does not add enrollment or progress tracking.
+does not add enrollment or progress tracking. Lesson footers may include an
+optional `.course-page__previous` link when a previous lesson exists. The
+consuming website decides whether to render it and supplies its destination.
 
 ## Images and captions
 
@@ -1101,15 +1103,19 @@ lesson and its two diagrams as the default lesson preview.
 ### Course lesson actions
 
 Place `.course-page__lesson-actions` at the end of the lesson article. It lays
-out a primary Mark Complete button and a secondary Next link, stacking them at
-narrow widths. Use `.course-page__completion` and `.course-page__next` on the
-controls. Next uses a short label and may include a decorative arrow icon.
+out an optional Previous link, a primary Mark Complete button and a secondary
+Next link. Use `.course-page__previous`, `.course-page__completion` and
+`.course-page__next` on the controls. On narrow screens, Mark Complete spans the
+first row and the navigation links share the row below. From 40em, Previous,
+Mark Complete and Next align left, centre and right. The navigation links use
+short labels and may include decorative arrow icons.
 
 The theme supplies presentation only. Applications connect Mark Complete to a
-CSRF-protected form or their own progress controller and provide the next lesson
-URL. For an already completed lesson, render a disabled Completed button with a
-check icon. On the final lesson, replace Next with a Course Overview link. The
-theme-demo Course page guide includes unfinished, completed and final examples.
+CSRF-protected form or their own progress controller and provide the lesson
+URLs. Render Previous only when a previous lesson exists. For an already
+completed lesson, render a disabled Completed button with a check icon. On the
+final lesson, replace Next with a Course Overview link. The theme-demo Course
+page guide includes first, middle, completed and final examples.
 
 ## Version 2.5.0
 
@@ -1124,3 +1130,15 @@ persisting progress, protecting completion requests, determining the next lesson
 and supplying all destinations. Existing Course page markup continues to work;
 adopting the footer requires adding the documented action markup. Other layouts,
 theme settings and Rails/Ruby requirements are unchanged.
+
+## Version 2.6.0
+
+Adds an optional Previous link to the Course page lesson-action footer. On wide
+screens, Previous, Mark Complete and Next align left, centre and right. On narrow
+screens, Mark Complete spans the first row and Previous and Next share the row
+below. Navigation labels remain on one line.
+
+The consuming website remains responsible for determining whether a previous
+lesson exists and omits `.course-page__previous` when it does not. Existing
+footers without Previous continue to work. No theme settings or Rails/Ruby
+requirements changed.
